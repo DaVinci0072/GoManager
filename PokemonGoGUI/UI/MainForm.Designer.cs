@@ -46,8 +46,11 @@
             this.olvColumnProxy = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnLastLogMessage = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.contextMenuStripAccounts = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.schedulerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.snipeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.markTutorialCompleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,7 +58,6 @@
             this.pauseUnPauseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.snipeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setMaxLevelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -105,7 +107,6 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.enableColorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showStatusBarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showGroupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.devToolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -313,8 +314,7 @@
             // 
             this.contextMenuStripAccounts.ImageScalingSize = new System.Drawing.Size(22, 22);
             this.contextMenuStripAccounts.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.schedulerToolStripMenuItem,
-            this.updateDetailsToolStripMenuItem,
+            this.toolsToolStripMenuItem,
             this.viewDetailsToolStripMenuItem,
             this.toolStripSeparator3,
             this.startToolStripMenuItem,
@@ -322,7 +322,6 @@
             this.pauseUnPauseToolStripMenuItem,
             this.stopToolStripMenuItem,
             this.toolStripSeparator4,
-            this.snipeToolStripMenuItem,
             this.settingsToolStripMenuItem,
             this.clearCountsToolStripMenuItem,
             this.addNewToolStripMenuItem,
@@ -334,26 +333,50 @@
             this.toolStripSeparator1,
             this.enableColorsToolStripMenuItem,
             this.showStatusBarToolStripMenuItem,
-            this.showGroupsToolStripMenuItem,
             this.deleteToolStripMenuItem,
             this.devToolsToolStripMenuItem,
             this.helpInfoToolStripMenuItem});
             this.contextMenuStripAccounts.Name = "contextMenuStrip1";
-            this.contextMenuStripAccounts.Size = new System.Drawing.Size(218, 616);
+            this.contextMenuStripAccounts.Size = new System.Drawing.Size(218, 563);
             this.contextMenuStripAccounts.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStripAccounts_Opening);
+            // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.schedulerToolStripMenuItem,
+            this.updateDetailsToolStripMenuItem,
+            this.snipeToolStripMenuItem,
+            this.markTutorialCompleteToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(217, 28);
+            this.toolsToolStripMenuItem.Text = "Tools";
             // 
             // schedulerToolStripMenuItem
             // 
             this.schedulerToolStripMenuItem.Name = "schedulerToolStripMenuItem";
-            this.schedulerToolStripMenuItem.Size = new System.Drawing.Size(217, 28);
+            this.schedulerToolStripMenuItem.Size = new System.Drawing.Size(270, 28);
             this.schedulerToolStripMenuItem.Text = "Scheduler";
             // 
             // updateDetailsToolStripMenuItem
             // 
             this.updateDetailsToolStripMenuItem.Name = "updateDetailsToolStripMenuItem";
-            this.updateDetailsToolStripMenuItem.Size = new System.Drawing.Size(217, 28);
-            this.updateDetailsToolStripMenuItem.Text = "Update Stats";
+            this.updateDetailsToolStripMenuItem.Size = new System.Drawing.Size(270, 28);
+            this.updateDetailsToolStripMenuItem.Text = "Update Details";
             this.updateDetailsToolStripMenuItem.Click += new System.EventHandler(this.updateDetailsToolStripMenuItem_Click);
+            // 
+            // snipeToolStripMenuItem
+            // 
+            this.snipeToolStripMenuItem.Name = "snipeToolStripMenuItem";
+            this.snipeToolStripMenuItem.Size = new System.Drawing.Size(270, 28);
+            this.snipeToolStripMenuItem.Text = "Snipe";
+            this.snipeToolStripMenuItem.Click += new System.EventHandler(this.snipeToolStripMenuItem_Click);
+            // 
+            // markTutorialCompleteToolStripMenuItem
+            // 
+            this.markTutorialCompleteToolStripMenuItem.Name = "markTutorialCompleteToolStripMenuItem";
+            this.markTutorialCompleteToolStripMenuItem.Size = new System.Drawing.Size(270, 28);
+            this.markTutorialCompleteToolStripMenuItem.Text = "Mark Tutorial Complete";
+            this.markTutorialCompleteToolStripMenuItem.Click += new System.EventHandler(this.markTutorialCompleteToolStripMenuItem_Click);
             // 
             // viewDetailsToolStripMenuItem
             // 
@@ -399,13 +422,6 @@
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
             this.toolStripSeparator4.Size = new System.Drawing.Size(214, 6);
-            // 
-            // snipeToolStripMenuItem
-            // 
-            this.snipeToolStripMenuItem.Name = "snipeToolStripMenuItem";
-            this.snipeToolStripMenuItem.Size = new System.Drawing.Size(217, 28);
-            this.snipeToolStripMenuItem.Text = "Snipe";
-            this.snipeToolStripMenuItem.Click += new System.EventHandler(this.snipeToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem
             // 
@@ -664,7 +680,7 @@
             // 
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(217, 28);
-            this.editToolStripMenuItem.Text = "Edit";
+            this.editToolStripMenuItem.Text = "Edit Settings";
             this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
             // 
             // importToolStripMenuItem
@@ -777,6 +793,7 @@
             this.enableColorsToolStripMenuItem.Name = "enableColorsToolStripMenuItem";
             this.enableColorsToolStripMenuItem.Size = new System.Drawing.Size(217, 28);
             this.enableColorsToolStripMenuItem.Text = "Enable Colors";
+            this.enableColorsToolStripMenuItem.Visible = false;
             this.enableColorsToolStripMenuItem.Click += new System.EventHandler(this.enableColorsToolStripMenuItem_Click);
             // 
             // showStatusBarToolStripMenuItem
@@ -787,15 +804,8 @@
             this.showStatusBarToolStripMenuItem.Name = "showStatusBarToolStripMenuItem";
             this.showStatusBarToolStripMenuItem.Size = new System.Drawing.Size(217, 28);
             this.showStatusBarToolStripMenuItem.Text = "Show Status Bar";
+            this.showStatusBarToolStripMenuItem.Visible = false;
             this.showStatusBarToolStripMenuItem.Click += new System.EventHandler(this.showStatusBarToolStripMenuItem_Click);
-            // 
-            // showGroupsToolStripMenuItem
-            // 
-            this.showGroupsToolStripMenuItem.Name = "showGroupsToolStripMenuItem";
-            this.showGroupsToolStripMenuItem.Size = new System.Drawing.Size(217, 28);
-            this.showGroupsToolStripMenuItem.Text = "Show Groups";
-            this.showGroupsToolStripMenuItem.Visible = false;
-            this.showGroupsToolStripMenuItem.Click += new System.EventHandler(this.showGroupsToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
@@ -1341,7 +1351,6 @@
         private System.Windows.Forms.ToolStripMenuItem enableColorsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem devToolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem garbageCollectionToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem updateDetailsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportProxiesToolStripMenuItem;
         private BrightIdeasSoftware.OLVColumn olvColumnAccountState;
         private BrightIdeasSoftware.OLVColumn olvColumnPokemonCaught;
@@ -1375,7 +1384,6 @@
         private System.Windows.Forms.ToolStripMenuItem afterLevelToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportJsonToolStripMenuItem;
         private BrightIdeasSoftware.OLVColumn olvColumnGroup;
-        private System.Windows.Forms.ToolStripMenuItem showGroupsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setGroupToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setMaxRuntimeToolStripMenuItem;
         private System.Windows.Forms.StatusStrip statusStripStats;
@@ -1390,7 +1398,6 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel6;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelAccountBanned;
         private System.Windows.Forms.ToolStripMenuItem importConfigToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem snipeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem largeAddressAwareToolStripMenuItem;
         private System.Windows.Forms.TabControl tabControlProxies;
         private System.Windows.Forms.TabPage tabPageAccounts;
@@ -1434,12 +1441,16 @@
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem enablelDisableToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem schedulerToolStripMenuItem;
         private BrightIdeasSoftware.OLVColumn olvColumnScheduler;
         private System.Windows.Forms.ToolStripMenuItem manualCheckToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem claimLevelUpToolStripMenuItem;
         private BrightIdeasSoftware.OLVColumn olvColumnSchedulerLastCall;
         private System.Windows.Forms.ToolStripMenuItem helpInfoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem markTutorialCompleteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem snipeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem schedulerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem updateDetailsToolStripMenuItem;
     }
 }
 

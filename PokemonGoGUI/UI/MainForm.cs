@@ -766,11 +766,6 @@ namespace PokemonGoGUI
             }
         }
 
-        private void showGroupsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            showGroupsToolStripMenuItem.Checked = !showGroupsToolStripMenuItem.Checked;
-        }
-
         private void fastObjectListViewMain_FormatCell(object sender, BrightIdeasSoftware.FormatCellEventArgs e)
         {
             Manager manager = (Manager)e.Model;
@@ -2126,5 +2121,27 @@ namespace PokemonGoGUI
         }
 
         #endregion
+
+        private async void markTutorialCompleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            markTutorialCompleteToolStripMenuItem.Enabled = false;
+
+            ParallelOptions options = new ParallelOptions
+            {
+                MaxDegreeOfParallelism = 10
+            };
+
+            IEnumerable<Manager> selectedManager = fastObjectListViewMain.SelectedObjects.Cast<Manager>();
+
+            await Task.Run(() =>
+            {
+                Parallel.ForEach(selectedManager, options, (manager) =>
+                {
+                    manager.MarkStartUpTutorialsComplete().Wait();
+                });
+            });
+
+            markTutorialCompleteToolStripMenuItem.Enabled = true;
+        }
     }
 }

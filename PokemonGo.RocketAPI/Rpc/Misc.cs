@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using POGOProtos.Networking.Requests;
 using POGOProtos.Networking.Requests.Messages;
 using POGOProtos.Networking.Responses;
+using POGOProtos.Enums;
 
 namespace PokemonGo.RocketAPI.Rpc
 {
@@ -48,9 +49,19 @@ namespace PokemonGo.RocketAPI.Rpc
             return await PostProtoPayload<Request, EchoResponse>(RequestType.Echo, new EchoMessage()).ConfigureAwait(false);
         }
 
-        public async Task<EncounterTutorialCompleteResponse> MarkTutorialComplete()
+        public async Task<MarkTutorialCompleteResponse> MarkTutorialComplete(List<TutorialState> tutorials)
         {
-            return await PostProtoPayload<Request, EncounterTutorialCompleteResponse>(RequestType.MarkTutorialComplete, new MarkTutorialCompleteMessage()).ConfigureAwait(false);
+            MarkTutorialCompleteMessage message = new MarkTutorialCompleteMessage();
+
+            message.SendPushNotifications = false;
+            message.SendMarketingEmails = false;
+
+            foreach(TutorialState tutorial in tutorials)
+            {
+                message.TutorialsCompleted.Add(tutorials);
+            }
+
+            return await PostProtoPayload<Request, MarkTutorialCompleteResponse>(RequestType.MarkTutorialComplete, message).ConfigureAwait(false);
         }
     }
 }

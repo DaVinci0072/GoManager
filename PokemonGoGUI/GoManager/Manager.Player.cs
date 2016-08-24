@@ -21,13 +21,6 @@ namespace PokemonGoGUI.GoManager
         {
             LogCaller(new LoggerEventArgs("Updating details", LoggerTypes.Debug));
 
-            MethodResult echoResult = await CheckReauthentication();
-
-            if(!echoResult.Success)
-            {
-                _client.Logout();
-            }
-
             if(!_client.LoggedIn)
             {
                 MethodResult loginResult = await Login();

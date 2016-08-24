@@ -53,6 +53,11 @@ namespace PokemonGo.RocketAPI
         {
             get
             {
+                if (AuthTicket == null)
+                {
+                    return true;
+                }
+
                 DateTime expired = DateTimeExtensions.GetDateTimeFromMilliseconds(AuthTicket.ExpireTimestampMs);
 
                 //1 minute buffer
