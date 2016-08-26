@@ -50,7 +50,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>gomanager_vector_icon_1.ico</ApplicationIcon>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="C5">
@@ -98,6 +98,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountScheduler\Scheduler.cs" />
@@ -117,6 +118,12 @@
     <Compile Include="Extensions\Prompt.cs" />
     <Compile Include="Extensions\Serializer.cs" />
     <Compile Include="Extensions\StringUtil.cs" />
+    <Compile Include="Extensions\TimePicker\TimePicker.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Extensions\TimePicker\TimePicker.Designer.cs">
+      <DependentUpon>TimePicker.cs</DependentUpon>
+    </Compile>
     <Compile Include="GoManager\Manager.CatchPokemon.cs" />
     <Compile Include="GoManager\Manager.Egg.cs" />
     <Compile Include="GoManager\Manager.Evolution.cs" />
@@ -159,6 +166,12 @@
     <Compile Include="UI\DetailsForm.Designer.cs">
       <DependentUpon>DetailsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\DonateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\DonateForm.Designer.cs">
+      <DependentUpon>DonateForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\LogViewerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -193,11 +206,17 @@
     <Compile Include="UI\TransferSettingsForm.Designer.cs">
       <DependentUpon>TransferSettingsForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Extensions\TimePicker\TimePicker.resx">
+      <DependentUpon>TimePicker.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\AccountSettingsForm.resx">
       <DependentUpon>AccountSettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\DetailsForm.resx">
       <DependentUpon>DetailsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DonateForm.resx">
+      <DependentUpon>DonateForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\LogViewerForm.resx">
       <DependentUpon>LogViewerForm.cs</DependentUpon>
@@ -247,7 +266,7 @@
     <Content Include="encrypt_32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="gomanager_vector_icon_1.ico" />
+    <Content Include="icon.ico" />
     <Content Include="ObjectListView.dll" />
   </ItemGroup>
   <ItemGroup>

@@ -17,6 +17,58 @@ namespace PokemonGoGUI.GoManager
 {
     public partial class Manager
     {
+        public async Task<MethodResult> UpgradePokemon(IEnumerable<PokemonData> pokemon, int amount)
+        {
+            foreach(PokemonData pData in pokemon)
+            {
+                await UpgradePokemon(pData, amount);
+            }
+
+            return new MethodResult
+            {
+                Success = true
+            };
+        }
+
+        public async Task<MethodResult> UpgradePokemon(PokemonData pokemon, int amount)
+        {
+            try
+            {
+                for (int i = 0; i < amount; i++)
+                {
+                    UpgradePokemonResponse upgradeResponse = await _client.Inventory.UpgradePokemon(pokemon.Id);
+
+                    if(upgradeResponse.Result != UpgradePokemonResponse.Types.Result.Success)
+                    {
+                        LogCaller(new LoggerEventArgs(String.Format("Finished upgrading pokemon. End result: {0}", upgradeResponse.Result.ToString().Replace("Error", "")), LoggerTypes.Info));
+
+                        break;
+                    }
+
+                    LogCaller(new LoggerEventArgs(String.Format("Pokemon {0} upgraded. CP: {1} -> {2}", pokemon.PokemonId, pokemon.Cp, upgradeResponse.UpgradedPokemon.Cp), LoggerTypes.Success));
+
+                    //So people don't complain about it not increasing
+                    pokemon.Cp = upgradeResponse.UpgradedPokemon.Cp;
+
+                    await Task.Delay(CalculateDelay(UserSettings.DelayBetweenPlayerActions, UserSettings.PlayerActionDelayRandom));
+                }
+
+
+                await Task.Delay(CalculateDelay(UserSettings.DelayBetweenPlayerActions, UserSettings.PlayerActionDelayRandom));
+
+                return new MethodResult
+                {
+                    Success = true
+                };
+            }
+            catch (Exception ex)
+            {
+                LogCaller(new LoggerEventArgs("Upgrade request failed", LoggerTypes.Exception, ex));
+
+                return new MethodResult();
+            }
+        }
+
         public async Task<MethodResult> TransferPokemon(IEnumerable<PokemonData> pokemonToTransfer)
         {
             foreach (PokemonData pokemon in pokemonToTransfer)
@@ -360,6 +412,57 @@ namespace PokemonGoGUI.GoManager
             {
                 Success = true
             };
+        }
+
+        public async Task RenameAllPokemonToIV(IEnumerable<PokemonData> pokemon)
+        {
+            foreach(PokemonData pData in pokemon)
+            {
+                string name = String.Format("{0:0}_{1}", CalculateIVPerfection(pData).Data, pData.PokemonId);
+
+                if (name.Length > 12)
+                {
+                    name = name.Substring(0, 12);
+                }
+
+                await RenamePokemon(pData, name);
+
+                await Task.Delay(CalculateDelay(UserSettings.DelayBetweenPlayerActions, UserSettings.PlayerActionDelayRandom));
+            }
+        }
+
+        public async Task<MethodResult> RenamePokemon(PokemonData pokemon, string name)
+        {
+            try
+            {
+                NicknamePokemonResponse nicknameResponse = await _client.Inventory.NicknamePokemon(pokemon.Id, name);
+
+                if (nicknameResponse.Result != NicknamePokemonResponse.Types.Result.Success)
+                {
+                    LogCaller(new LoggerEventArgs(String.Format("Failed to rename pokemon. Response: {0}", nicknameResponse.Result), LoggerTypes.Warning));
+
+                    return new MethodResult();
+                }
+                else
+                {
+                    LogCaller(new LoggerEventArgs(
+                        String.Format("Successully nicknamed {0} to {1}",
+                                    pokemon.PokemonId,
+                                    name),
+                                    LoggerTypes.Info));
+
+                    return new MethodResult
+                    {
+                        Success = true
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                LogCaller(new LoggerEventArgs("Nickname request failed", LoggerTypes.Exception, ex));
+
+                return new MethodResult();
+            }
         }
 
         private double CalculateMaxCpMultiplier(PokemonData poke)

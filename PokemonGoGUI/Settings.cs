@@ -36,7 +36,7 @@ namespace PokemonGoGUI
         public bool TransferPokemon { get; set; }
         public bool EvolvePokemon { get; set; }
         public bool CatchPokemon { get; set; }
-        public bool IncubateEggs { get; set; }
+        public bool IncubateEggsBasicOnly { get; set; }
         public bool SnipePokemon { get; set; }
         public int MaxLevel { get; set; }
         public int SnipeAfterPokestops { get; set; }

@@ -111,5 +111,6 @@ namespace PokemonGo.RocketAPI.Rpc
                 Team = teamColor
             }).ConfigureAwait(false);
         }
+
     }
 }

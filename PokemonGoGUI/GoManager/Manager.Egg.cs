@@ -15,26 +15,11 @@ namespace PokemonGoGUI.GoManager
     {
         private async Task<MethodResult> IncubateEggs()
         {
-            if(!UserSettings.IncubateEggs)
-            {
-                LogCaller(new LoggerEventArgs("Incubating disabled", LoggerTypes.Info));
-
-                return new MethodResult
-                {
-                    Message = "Incubate eggs disabled",
-                    Success = true
-                };
-            }
-
             MethodResult<EggIncubator> incubatorResponse = GetIncubator();
 
             if(!incubatorResponse.Success)
             {
-                return new MethodResult
-                {
-                    Message = incubatorResponse.Message,
-                    Success = true
-                };
+                return new MethodResult();
             }
 
             PokemonData egg = Eggs.FirstOrDefault(x => String.IsNullOrEmpty(x.EggIncubatorId));
@@ -96,6 +81,12 @@ namespace PokemonGoGUI.GoManager
                 };
             }
 
+            if(UserSettings.IncubateEggsBasicOnly)
+            {
+                return new MethodResult<EggIncubator>();
+            }
+
+            //These are not unlimited
             IEnumerable<EggIncubator> incubators = Incubators.Where(x => x.ItemId == ItemId.ItemIncubatorBasic && x.PokemonId == 0);
 
             foreach(EggIncubator incubator in incubators)

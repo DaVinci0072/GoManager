@@ -142,6 +142,7 @@ namespace PokemonGo.RocketAPI.Helpers
             val.Unknown2.Unknown1 = ByteString.CopyFrom(Encrypt(sig.ToByteArray()));
             return val;
         }
+
         private byte[] Encrypt(byte[] bytes)
         {
             var outputLength = 32 + bytes.Length + (256 - (bytes.Length % 256));
@@ -237,8 +238,6 @@ namespace PokemonGo.RocketAPI.Helpers
             };
             return e;
         }
-
-
 
         public RequestEnvelope GetRequestEnvelope(RequestType type, IMessage message)
         {

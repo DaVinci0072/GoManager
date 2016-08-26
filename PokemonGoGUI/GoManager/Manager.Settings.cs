@@ -64,6 +64,7 @@ namespace PokemonGoGUI.GoManager
             exportModel.Type = UserSettings.AuthType.ToString();
             exportModel.Username = UserSettings.PtcUsername;
             exportModel.Password = UserSettings.PtcPassword;
+            exportModel.StarDust = TotalStardust;
             exportModel.Pokedex = Pokedex.Select(x => new PokedexEntryExportModel(x)).ToList();
             exportModel.Pokemon = Pokemon.Select(x => new PokemonDataExportModel(x, CalculateIVPerfection(x).Data)).ToList();
             exportModel.Items = Items.Select(x => new ItemDataExportModel(x)).ToList();

@@ -109,6 +109,10 @@ namespace PokemonGoGUI.GoManager
                 {
                     ++failedAttempts;
                 }
+                else
+                {
+                    failedAttempts = 0;
+                }
 
                 pokemonToSnipe = pokemonToSnipe.Where(x => PokemonWithinCatchSettings(x.PokemonId) && x.DespawnTime >= DateTime.Now.AddSeconds(30)).ToList();
 

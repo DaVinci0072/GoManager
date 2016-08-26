@@ -95,9 +95,18 @@ namespace PokemonGoGUI.GoManager
 
             sourceLocation = new GeoCoordinate(_client.CurrentLatitude, _client.CurrentLongitude);
 
-            while (CalculateDistanceInMeters(sourceLocation, location) >= 25)
+            bool notifyOnce = true;
+
+            while (CalculateDistanceInMeters(sourceLocation, location) >= 25 && IsRunning)
             {
                 await Task.Delay(CalculateDelay(UserSettings.DelayBetweenLocationUpdates, UserSettings.LocationupdateDelayRandom));
+
+                MethodResult reauthResult = await CheckReauthentication();
+
+                if(!reauthResult.Success)
+                {
+                    return new MethodResult();
+                }
 
                 speedInMetersPerSecond = (UserSettings.WalkingSpeed + WalkOffset()) / 3.6;
 
@@ -110,6 +119,18 @@ namespace PokemonGoGUI.GoManager
 
                 sourceLocation = new GeoCoordinate(_client.CurrentLatitude, _client.CurrentLongitude);
                 var currentDistanceToTarget = CalculateDistanceInMeters(sourceLocation, location);
+
+                //Debugging help
+                if (notifyOnce)
+                {
+                    if (currentDistanceToTarget >= 10000)
+                    {
+                        LogCaller(new LoggerEventArgs(String.Format("Current distance to target is {0:0.00}m", currentDistanceToTarget), LoggerTypes.Debug));
+
+                        notifyOnce = false;
+                    }
+                }
+
 
                 nextWaypointDistance = Math.Min(currentDistanceToTarget,
                     millisecondsUntilGetUpdatePlayerLocationResponse / 1000 * speedInMetersPerSecond);

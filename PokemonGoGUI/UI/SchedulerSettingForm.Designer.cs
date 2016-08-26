@@ -32,8 +32,6 @@
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.numericUpDownStartTime = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownEndTime = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.numericUpDownPokemonMin = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
@@ -56,8 +54,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.textBoxChosenColor = new System.Windows.Forms.TextBox();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownStartTime)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownEndTime)).BeginInit();
+            this.timePickerEndTime = new PokemonGoGUI.Extensions.TimePicker.TimePicker();
+            this.timePickerStartTime = new PokemonGoGUI.Extensions.TimePicker.TimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPokemonMin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPokemonMax)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPokestopsMin)).BeginInit();
@@ -84,42 +82,16 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(24, 71);
+            this.label2.Location = new System.Drawing.Point(28, 71);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(106, 16);
+            this.label2.Size = new System.Drawing.Size(102, 16);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Scheduler Time:";
-            // 
-            // numericUpDownStartTime
-            // 
-            this.numericUpDownStartTime.DecimalPlaces = 2;
-            this.numericUpDownStartTime.Location = new System.Drawing.Point(136, 69);
-            this.numericUpDownStartTime.Maximum = new decimal(new int[] {
-            2399,
-            0,
-            0,
-            131072});
-            this.numericUpDownStartTime.Name = "numericUpDownStartTime";
-            this.numericUpDownStartTime.Size = new System.Drawing.Size(68, 22);
-            this.numericUpDownStartTime.TabIndex = 2;
-            // 
-            // numericUpDownEndTime
-            // 
-            this.numericUpDownEndTime.DecimalPlaces = 2;
-            this.numericUpDownEndTime.Location = new System.Drawing.Point(235, 69);
-            this.numericUpDownEndTime.Maximum = new decimal(new int[] {
-            2399,
-            0,
-            0,
-            131072});
-            this.numericUpDownEndTime.Name = "numericUpDownEndTime";
-            this.numericUpDownEndTime.Size = new System.Drawing.Size(68, 22);
-            this.numericUpDownEndTime.TabIndex = 3;
+            this.label2.Text = "Schedule Time:";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(210, 71);
+            this.label3.Location = new System.Drawing.Point(196, 71);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(19, 16);
             this.label3.TabIndex = 2;
@@ -325,11 +297,37 @@
             this.textBoxChosenColor.TabIndex = 1;
             this.textBoxChosenColor.Text = "Color";
             // 
+            // timePickerEndTime
+            // 
+            this.timePickerEndTime.Hours = 0;
+            this.timePickerEndTime.Location = new System.Drawing.Point(222, 71);
+            this.timePickerEndTime.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.timePickerEndTime.Minutes = 0;
+            this.timePickerEndTime.Name = "timePickerEndTime";
+            this.timePickerEndTime.Size = new System.Drawing.Size(52, 25);
+            this.timePickerEndTime.TabIndex = 13;
+            this.timePickerEndTime.Value = System.TimeSpan.Parse("00:00:00");
+            this.timePickerEndTime.OnValueChanged += new System.EventHandler(this.timePickerEndTime_OnValueChanged);
+            // 
+            // timePickerStartTime
+            // 
+            this.timePickerStartTime.Hours = 0;
+            this.timePickerStartTime.Location = new System.Drawing.Point(137, 71);
+            this.timePickerStartTime.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.timePickerStartTime.Minutes = 0;
+            this.timePickerStartTime.Name = "timePickerStartTime";
+            this.timePickerStartTime.Size = new System.Drawing.Size(52, 25);
+            this.timePickerStartTime.TabIndex = 13;
+            this.timePickerStartTime.Value = System.TimeSpan.Parse("00:00:00");
+            this.timePickerStartTime.OnValueChanged += new System.EventHandler(this.timePickerStartTime_OnValueChanged);
+            // 
             // SchedulerSettingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(430, 283);
+            this.Controls.Add(this.timePickerEndTime);
+            this.Controls.Add(this.timePickerStartTime);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.buttonDone);
             this.Controls.Add(this.label10);
@@ -343,9 +341,7 @@
             this.Controls.Add(this.numericUpDownPokestopsMin);
             this.Controls.Add(this.numericUpDownPokemonMax);
             this.Controls.Add(this.numericUpDownPokemonMin);
-            this.Controls.Add(this.numericUpDownEndTime);
             this.Controls.Add(this.numericUpDownCheckSpeed);
-            this.Controls.Add(this.numericUpDownStartTime);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label7);
@@ -359,8 +355,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "SchedulerSettingForm";
             this.Load += new System.EventHandler(this.SchedulerSettingForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownStartTime)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownEndTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPokemonMin)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPokemonMax)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPokestopsMin)).EndInit();
@@ -376,8 +370,6 @@
         private System.Windows.Forms.TextBox textBoxName;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.NumericUpDown numericUpDownStartTime;
-        private System.Windows.Forms.NumericUpDown numericUpDownEndTime;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown numericUpDownPokemonMin;
         private System.Windows.Forms.Label label4;
@@ -400,5 +392,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox textBoxChosenColor;
+        private Extensions.TimePicker.TimePicker timePickerStartTime;
+        private Extensions.TimePicker.TimePicker timePickerEndTime;
     }
 }

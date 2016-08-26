@@ -6,6 +6,7 @@ using POGOProtos.Inventory.Item;
 using POGOProtos.Settings.Master;
 using PokemonGo.RocketAPI;
 using PokemonGo.RocketAPI.Helpers;
+using PokemonGoGUI.AccountScheduler;
 using PokemonGoGUI.Enums;
 using PokemonGoGUI.Extensions;
 using PokemonGoGUI.GoManager;
@@ -57,6 +58,9 @@ namespace PokemonGoGUI.UI
 
             fastObjectListViewCandy.BackColor = Color.FromArgb(43, 43, 43);
             fastObjectListViewCandy.ForeColor = Color.LightGray;
+
+            fastObjectListViewTracking.BackColor = Color.FromArgb(43, 43, 43);
+            fastObjectListViewTracking.ForeColor = Color.LightGray;
 
             #region Pokedex
 
@@ -260,6 +264,31 @@ namespace PokemonGoGUI.UI
             };
 
             #endregion
+
+            #region Tracker
+
+            olvColumnTrackingHour.AspectGetter = delegate(object x)
+            {
+                KeyValuePair<DateTime, TrackerValues> item = (KeyValuePair<DateTime, TrackerValues>)x;
+
+                return item.Key.Hour;
+            };
+
+            olvColumnTrackingPokestops.AspectGetter = delegate(object x)
+            {
+                KeyValuePair<DateTime, TrackerValues> item = (KeyValuePair<DateTime, TrackerValues>)x;
+
+                return item.Value.Pokestops;
+            };
+
+            olvColumnTrackingPokemon.AspectGetter = delegate(object x)
+            {
+                KeyValuePair<DateTime, TrackerValues> item = (KeyValuePair<DateTime, TrackerValues>)x;
+
+                return item.Value.Pokemon;
+            };
+
+            #endregion
         }
 
         private async void DetailsForm_Load(object sender, EventArgs e)
@@ -419,6 +448,7 @@ namespace PokemonGoGUI.UI
             fastObjectListViewInventory.SetObjects(_manager.Items);
             fastObjectListViewLogs.SetObjects(_manager.Logs);
             fastObjectListViewEggs.SetObjects(_manager.Eggs);
+            fastObjectListViewTracking.SetObjects(_manager.Tracker.Values);
         }
 
         private async void buttonUpdateStats_Click(object sender, EventArgs e)
@@ -536,16 +566,28 @@ namespace PokemonGoGUI.UI
             }
         }
 
-        private void upgradeToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void upgradeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show(String.Format("Are you sure you want to upgrade {0} pokemon?", fastObjectListViewPokemon.SelectedObjects.Count), "Confirmation", MessageBoxButtons.YesNo);
+            string amountStr = Prompt.ShowDialog("Times to upgrade", "Upgrade Amount", "1");
+            int amount = 0;
 
-            if(result != DialogResult.Yes)
+            if(!Int32.TryParse(amountStr, out amount) || amount <= 0)
             {
+                MessageBox.Show("Invalid upgrade amount", "Warning");
                 return;
             }
 
+            upgradeToolStripMenuItem.Enabled = false;
+
+            MethodResult managerResult = await _manager.UpgradePokemon(fastObjectListViewPokemon.SelectedObjects.Cast<PokemonData>(), amount);
+
+            await UpdateDetails();
+
+            upgradeToolStripMenuItem.Enabled = true;
+
             fastObjectListViewPokemon.SetObjects(_manager.Pokemon);
+
+            MessageBox.Show("Finished upgrading pokemon");
         }
 
         private async void transferToolStripMenuItem_Click(object sender, EventArgs e)
@@ -742,6 +784,54 @@ namespace PokemonGoGUI.UI
             }
 
             showFutureTransfersToolStripMenuItem.Enabled = true;
+        }
+
+        private async void wIVToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            renameToolStripMenuItem.Enabled = false;
+
+            await _manager.RenameAllPokemonToIV(fastObjectListViewPokemon.SelectedObjects.Cast<PokemonData>());
+
+            await UpdateDetails();
+
+            renameToolStripMenuItem.Enabled = true;
+
+            fastObjectListViewPokemon.SetObjects(_manager.Pokemon);
+
+            MessageBox.Show("Finished renaming pokemon");
+        }
+
+        private async void customToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string name = Prompt.ShowDialog("Choose pokemon nickname (12 character max)", "Set name");
+
+            if(String.IsNullOrEmpty(name))
+            {
+                return;
+            }
+
+            if(name.Length > 12)
+            {
+                MessageBox.Show("Invalid name length");
+                return;
+            }
+
+            renameToolStripMenuItem.Enabled = false;
+
+            foreach(PokemonData pData in fastObjectListViewPokemon.SelectedObjects)
+            {
+                await _manager.RenamePokemon(pData, name);
+
+                await Task.Delay(500);
+            }
+
+            await UpdateDetails();
+
+            renameToolStripMenuItem.Enabled = true;
+
+            fastObjectListViewPokemon.SetObjects(_manager.Pokemon);
+
+            MessageBox.Show("Finished renaming pokemon");
         }
     }
 }

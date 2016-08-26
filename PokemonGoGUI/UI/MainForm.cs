@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using BrightIdeasSoftware;
+using Newtonsoft.Json;
 using POGOProtos.Enums;
 using PokemonGo.RocketAPI;
 using PokemonGo.RocketAPI.Enums;
@@ -13,6 +14,7 @@ using PokemonGoGUI.UI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -30,8 +32,11 @@ namespace PokemonGoGUI
         private bool _spf = false;
         private bool _showStartup = true;
 
+        private const string _discordInvite = "https://discord.gg/4qn5gCf";
+        private const string _updateDomain = "";
+
         private readonly string _saveFile = "data";
-        private const string _versionNumber = "1.3.1";
+        private const string _versionNumber = "1.3.3";
 
         public MainForm()
         {
@@ -53,6 +58,33 @@ namespace PokemonGoGUI
             //fastOjectListViewMain.AlwaysGroupByColumn = olvColumnGroup;
 
             Text = "GoManager - v" + _versionNumber;
+
+            olvColumnSchedulerLastCall.AspectGetter = delegate(object x)
+            {
+                Scheduler scheduler = (Scheduler)x;
+
+                TimeSpan time = TimeSpan.FromMinutes(scheduler.TimeSinceLastCall);
+
+                return String.Format("{0}m {1}s", time.Minutes, time.Seconds);
+            };
+
+            olvColumnSchedulerStart.AspectGetter = delegate(object x)
+            {
+                Scheduler scheduler = (Scheduler)x;
+
+                TimeSpan time = TimeSpan.FromHours(scheduler.StartTime);
+
+                return String.Format("{0:00}:{1:00}", time.Hours, time.Minutes);
+            };
+
+            olvColumnSchedulerEnd.AspectGetter = delegate(object x)
+            {
+                Scheduler scheduler = (Scheduler)x;
+
+                TimeSpan time = TimeSpan.FromHours(scheduler.EndTime);
+
+                return String.Format("{0:00}:{1:00}", time.Hours, time.Minutes);
+            };
 
             olvColumnProxyAuth.AspectGetter = delegate(object x)
             {
@@ -115,7 +147,6 @@ namespace PokemonGoGUI
 
         private async void MainForm_Load(object sender, EventArgs e)
         {
-
             this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
 
             RenameDLL();
@@ -230,6 +261,31 @@ namespace PokemonGoGUI
                     _spf = model.SPF;
                     _showStartup = model.ShowWelcomeMessage;
 
+                    if (model.WindowLocation.HasValue)
+                    {
+                        Location = (System.Drawing.Point)model.WindowLocation;
+                    }
+
+                    if(model.WindowSize.HasValue)
+                    {
+                        Size = (System.Drawing.Size)model.WindowSize;
+                    }
+
+                    //Restore states
+                    if (model.AccountHeaderInfo != null)
+                    {
+                        fastObjectListViewMain.RestoreState(model.AccountHeaderInfo);
+                    }
+
+                    if (model.ProxyHeaderInfo != null)
+                    {
+                        fastObjectListViewProxies.RestoreState(model.ProxyHeaderInfo);
+                    }
+
+                    if (model.SchedulerHeaderInfo != null)
+                    {
+                        fastObjectListViewScheduler.RestoreState(model.SchedulerHeaderInfo);
+                    }
                 }
                 else
                 {
@@ -237,6 +293,7 @@ namespace PokemonGoGUI
 
                     tempManagers = Serializer.FromJson<List<Manager>>(data);
                 }
+
 
                 if(tempManagers == null)
                 {
@@ -248,8 +305,6 @@ namespace PokemonGoGUI
                 {
                     manager.AddSchedulerEvent();
                     manager.ProxyHandler = _proxyHandler;
-                    manager.OnLog += manager_OnLog;
-                    manager.OnInventoryUpdate += manager_OnInventoryUpdate;
 
                     //Patch for version upgrade
                     if(String.IsNullOrEmpty(manager.UserSettings.DeviceId))
@@ -287,7 +342,12 @@ namespace PokemonGoGUI
                     ProxyHandler = _proxyHandler,
                     Schedulers = _schedulers,
                     SPF = _spf,
-                    ShowWelcomeMessage = _showStartup
+                    ShowWelcomeMessage = _showStartup,
+                    AccountHeaderInfo = fastObjectListViewMain.SaveState(),
+                    ProxyHeaderInfo = fastObjectListViewProxies.SaveState(),
+                    SchedulerHeaderInfo = fastObjectListViewScheduler.SaveState(),
+                    WindowLocation = Location,
+                    WindowSize = Size
                 };
 
                 string data = Serializer.ToJson(model);
@@ -300,34 +360,6 @@ namespace PokemonGoGUI
             {
                 //Failed to save
             }
-        }
-
-        private void manager_OnInventoryUpdate(object sender, EventArgs e)
-        {
-            return;
-
-            Manager manager = sender as Manager;
-
-            if(manager == null)
-            {
-                return;
-            }
-
-            //RefreshManager(manager);
-        }
-
-        private void manager_OnLog(object sender, LoggerEventArgs e)
-        {
-            return;
-
-            Manager manager = sender as Manager;
-
-            if (manager == null)
-            {
-                return;
-            }
-
-            //RefreshManager(manager);
         }
 
         private void addNewToolStripMenuItem_Click(object sender, EventArgs e)
@@ -375,9 +407,6 @@ namespace PokemonGoGUI
                 {
                     manager.RemoveProxy();
                     manager.RemoveScheduler();
-
-                    manager.OnLog -= manager_OnLog;
-                    manager.OnInventoryUpdate -= manager_OnInventoryUpdate;
 
                     _managers.Remove(manager);
                 }
@@ -498,9 +527,6 @@ namespace PokemonGoGUI
 
         private void AddManager(Manager manager)
         {
-            manager.OnLog += manager_OnLog;
-            manager.OnInventoryUpdate += manager_OnInventoryUpdate;
-
             _managers.Add(manager);
         }
 
@@ -1098,7 +1124,7 @@ namespace PokemonGoGUI
 
         private void clearCountsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("This will reset your last 23 hour count and is updated to accurately reflect your pokestops + pokemon counts.\n\nAre you sure you want to clear this?", "Confirmation", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show("This will reset your last 23 hour count that is automatically updated to accurately reflect your pokestops + pokemon counts.\n\nAre you sure you want to clear this?", "Confirmation", MessageBoxButtons.YesNo);
 
             if(result != DialogResult.Yes)
             {
@@ -1252,7 +1278,7 @@ namespace PokemonGoGUI
             enableTransferToolStripMenuItem.Checked = manager.UserSettings.TransferPokemon;
             enableEvolveToolStripMenuItem1.Checked = manager.UserSettings.EvolvePokemon;
             enableRecycleToolStripMenuItem4.Checked = manager.UserSettings.RecycleItems;
-            enableIncubateEggsToolStripMenuItem5.Checked = manager.UserSettings.IncubateEggs;
+            enableIncubateEggsToolStripMenuItem5.Checked = manager.UserSettings.IncubateEggsBasicOnly;
             enableLuckyEggsToolStripMenuItem6.Checked = manager.UserSettings.UseLuckyEgg;
             enableSnipePokemonToolStripMenuItem3.Checked = manager.UserSettings.SnipePokemon;
             enableCatchPokemonToolStripMenuItem2.Checked = manager.UserSettings.CatchPokemon;
@@ -1340,7 +1366,7 @@ namespace PokemonGoGUI
         {
             foreach (Manager manager in fastObjectListViewMain.SelectedObjects)
             {
-                manager.UserSettings.IncubateEggs = !enableIncubateEggsToolStripMenuItem5.Checked;
+                manager.UserSettings.IncubateEggsBasicOnly = !enableIncubateEggsToolStripMenuItem5.Checked;
             }
 
             fastObjectListViewMain.RefreshSelectedObjects();
@@ -1690,7 +1716,6 @@ namespace PokemonGoGUI
             snipePokemonToolStripMenuItem.Enabled = true;
         }
 
-
         #region Proxies
 
         private void tabControlProxies_SelectedIndexChanged(object sender, EventArgs e)
@@ -1703,6 +1728,8 @@ namespace PokemonGoGUI
             {
                 fastObjectListViewScheduler.SetObjects(_schedulers);
             }
+
+            toolStripStatusLabelSelected.Text = "0";
         }
 
         private void resetBanStateToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1821,11 +1848,16 @@ namespace PokemonGoGUI
 
             foreach(GoProxy proxy in fastObjectListViewProxies.SelectedObjects)
             {
-                if(proxy.CurrentAccounts > 0 && !messageShown)
+                if(proxy.CurrentAccounts > 0)
                 {
-                    messageShown = true;
+                    if (!messageShown)
+                    {
+                        messageShown = true;
 
-                    MessageBox.Show("Only proxies with 0 accounts tied to them will be removed", "Information");
+                        MessageBox.Show("Only proxies with 0 accounts tied to them will be removed", "Information");
+                    }
+
+                    continue;
                 }
 
                 _proxyHandler.RemoveProxy(proxy);
@@ -1938,6 +1970,16 @@ namespace PokemonGoGUI
                     e.SubItem.ForeColor = Color.Red;
                 }
             }
+        }
+
+        private void clearFailuresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach(GoProxy proxy in fastObjectListViewProxies.SelectedObjects)
+            {
+                proxy.ClearFailCounter();
+            }
+
+            fastObjectListViewProxies.RefreshSelectedObjects();
         }
 
         #endregion
@@ -2133,15 +2175,66 @@ namespace PokemonGoGUI
 
             IEnumerable<Manager> selectedManager = fastObjectListViewMain.SelectedObjects.Cast<Manager>();
 
+            if(fastObjectListViewMain.SelectedObjects.Count == 0)
+            {
+                return;
+            }
+
+            DialogResult result = MessageBox.Show("Force avatar update to fix bug in v1.3.1?", "Confirmation", MessageBoxButtons.YesNo);
+
+            bool forceUpdate = false;
+
+            if(result == DialogResult.Yes)
+            {
+                forceUpdate = true;
+            }
+
             await Task.Run(() =>
             {
                 Parallel.ForEach(selectedManager, options, (manager) =>
                 {
-                    manager.MarkStartUpTutorialsComplete().Wait();
+                    manager.MarkStartUpTutorialsComplete(forceUpdate).Wait();
                 });
             });
 
             markTutorialCompleteToolStripMenuItem.Enabled = true;
+        }
+
+        private void updateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Sorry, this function is not implemented yet", "Information");
+        }
+
+        private void discordToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string info = @"Our Discord chat is the easiest, and fastest, place to get support and new updates.
+
+Do you wish to join?";
+
+            DialogResult result = MessageBox.Show(info, "Confirmation", MessageBoxButtons.YesNo);
+
+            if(result == DialogResult.Yes)
+            {
+                Process.Start(_discordInvite);
+            }
+        }
+
+        private void donateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DonateForm donateForm = new DonateForm();
+            donateForm.ShowDialog();
+        }
+
+        private void fastObjectListView_SelectionChanged(object sender, EventArgs e)
+        {
+            FastObjectListView olv = sender as FastObjectListView;
+
+            if(olv == null)
+            {
+                return;
+            }
+
+            toolStripStatusLabelSelected.Text = olv.SelectedObjects.Count.ToString();
         }
     }
 }

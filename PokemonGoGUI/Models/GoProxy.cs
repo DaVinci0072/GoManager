@@ -15,5 +15,10 @@ namespace PokemonGoGUI.Models
             MaxConcurrentFails = 3;
             MaxAccounts = 1;
         }
+
+        public void ClearFailCounter()
+        {
+            CurrentConcurrentFails = 0;
+        }
     }
 }

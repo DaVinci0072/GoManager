@@ -16,9 +16,11 @@ namespace PokemonGo.RocketAPI.Login
         readonly string password;
         readonly string username;
         readonly ISettings settings;
-        readonly CookieContainer cookies = new CookieContainer();
+         CookieContainer cookies = new CookieContainer();
         readonly int defaultTimeout = 10000;
         readonly ProxyEx defaultProxy;
+        private SessionData sessionData = null;
+
 
         public PtcLogin(string username, string password, ISettings settings)
         {
@@ -148,6 +150,12 @@ namespace PokemonGo.RocketAPI.Login
 
         private async Task<SessionData> GetSessionCookie()
         {
+            if(sessionData != null)
+            {
+                //Clear cookies
+                cookies = new CookieContainer();
+            }
+
             using(WebClientEx wc = new WebClientEx())
             {
                 wc.CookieContainer = cookies;
@@ -155,8 +163,8 @@ namespace PokemonGo.RocketAPI.Login
                 wc.Timeout = defaultTimeout;
 
                 string response = await wc.DownloadStringTaskAsync(Resources.PtcLoginUrl);
-                SessionData sessionData = JsonConvert.DeserializeObject<SessionData>(response);
-
+                sessionData = JsonConvert.DeserializeObject<SessionData>(response);
+                 
                 return sessionData;
             }
         }

@@ -44,6 +44,7 @@
             this.numericUpDownSnipeAfterStops = new System.Windows.Forms.NumericUpDown();
             this.checkBoxSnipePokemon = new System.Windows.Forms.CheckBox();
             this.checkBoxIncubateEggs = new System.Windows.Forms.CheckBox();
+            this.checkBoxStopOnAPIUpdate = new System.Windows.Forms.CheckBox();
             this.checkBoxClaimLevelUp = new System.Windows.Forms.CheckBox();
             this.checkBoxUseLuckyEgg = new System.Windows.Forms.CheckBox();
             this.checkBoxRecycle = new System.Windows.Forms.CheckBox();
@@ -200,7 +201,6 @@
             this.toolTipProxy = new System.Windows.Forms.ToolTip(this.components);
             this.toolTipMinAccountState = new System.Windows.Forms.ToolTip(this.components);
             this.toolTipHumanizeThrows = new System.Windows.Forms.ToolTip(this.components);
-            this.checkBoxStopOnAPIUpdate = new System.Windows.Forms.CheckBox();
             this.tabControlMain.SuspendLayout();
             this.tabPageDetails.SuspendLayout();
             this.tabControlSettings.SuspendLayout();
@@ -252,7 +252,7 @@
             this.tabControlMain.Location = new System.Drawing.Point(0, 0);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.Size = new System.Drawing.Size(502, 539);
+            this.tabControlMain.Size = new System.Drawing.Size(534, 539);
             this.tabControlMain.TabIndex = 0;
             // 
             // tabPageDetails
@@ -266,7 +266,7 @@
             this.tabPageDetails.Location = new System.Drawing.Point(4, 25);
             this.tabPageDetails.Name = "tabPageDetails";
             this.tabPageDetails.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDetails.Size = new System.Drawing.Size(494, 510);
+            this.tabPageDetails.Size = new System.Drawing.Size(526, 510);
             this.tabPageDetails.TabIndex = 1;
             this.tabPageDetails.Text = "Details";
             this.tabPageDetails.UseVisualStyleBackColor = true;
@@ -284,7 +284,7 @@
             this.tabControlSettings.Location = new System.Drawing.Point(-4, 0);
             this.tabControlSettings.Name = "tabControlSettings";
             this.tabControlSettings.SelectedIndex = 0;
-            this.tabControlSettings.Size = new System.Drawing.Size(502, 457);
+            this.tabControlSettings.Size = new System.Drawing.Size(534, 457);
             this.tabControlSettings.TabIndex = 0;
             // 
             // tabPageSettingsGeneral
@@ -333,7 +333,7 @@
             this.tabPageSettingsGeneral.Location = new System.Drawing.Point(4, 25);
             this.tabPageSettingsGeneral.Name = "tabPageSettingsGeneral";
             this.tabPageSettingsGeneral.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSettingsGeneral.Size = new System.Drawing.Size(494, 428);
+            this.tabPageSettingsGeneral.Size = new System.Drawing.Size(526, 428);
             this.tabPageSettingsGeneral.TabIndex = 0;
             this.tabPageSettingsGeneral.Text = "General";
             this.tabPageSettingsGeneral.UseVisualStyleBackColor = true;
@@ -384,7 +384,7 @@
             // 
             // numericUpDownMaxLogs
             // 
-            this.numericUpDownMaxLogs.Location = new System.Drawing.Point(368, 224);
+            this.numericUpDownMaxLogs.Location = new System.Drawing.Point(382, 224);
             this.numericUpDownMaxLogs.Maximum = new decimal(new int[] {
             999999,
             0,
@@ -496,17 +496,27 @@
             // checkBoxIncubateEggs
             // 
             this.checkBoxIncubateEggs.AutoSize = true;
-            this.checkBoxIncubateEggs.Location = new System.Drawing.Point(335, 111);
+            this.checkBoxIncubateEggs.Location = new System.Drawing.Point(349, 111);
             this.checkBoxIncubateEggs.Name = "checkBoxIncubateEggs";
-            this.checkBoxIncubateEggs.Size = new System.Drawing.Size(116, 20);
+            this.checkBoxIncubateEggs.Size = new System.Drawing.Size(159, 20);
             this.checkBoxIncubateEggs.TabIndex = 16;
-            this.checkBoxIncubateEggs.Text = "Incubate Eggs";
+            this.checkBoxIncubateEggs.Text = "Basic Incubators Only";
             this.checkBoxIncubateEggs.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxStopOnAPIUpdate
+            // 
+            this.checkBoxStopOnAPIUpdate.AutoSize = true;
+            this.checkBoxStopOnAPIUpdate.Location = new System.Drawing.Point(349, 189);
+            this.checkBoxStopOnAPIUpdate.Name = "checkBoxStopOnAPIUpdate";
+            this.checkBoxStopOnAPIUpdate.Size = new System.Drawing.Size(148, 20);
+            this.checkBoxStopOnAPIUpdate.TabIndex = 17;
+            this.checkBoxStopOnAPIUpdate.Text = "Stop on API Update";
+            this.checkBoxStopOnAPIUpdate.UseVisualStyleBackColor = true;
             // 
             // checkBoxClaimLevelUp
             // 
             this.checkBoxClaimLevelUp.AutoSize = true;
-            this.checkBoxClaimLevelUp.Location = new System.Drawing.Point(335, 163);
+            this.checkBoxClaimLevelUp.Location = new System.Drawing.Point(349, 163);
             this.checkBoxClaimLevelUp.Name = "checkBoxClaimLevelUp";
             this.checkBoxClaimLevelUp.Size = new System.Drawing.Size(121, 20);
             this.checkBoxClaimLevelUp.TabIndex = 17;
@@ -516,7 +526,7 @@
             // checkBoxUseLuckyEgg
             // 
             this.checkBoxUseLuckyEgg.AutoSize = true;
-            this.checkBoxUseLuckyEgg.Location = new System.Drawing.Point(335, 137);
+            this.checkBoxUseLuckyEgg.Location = new System.Drawing.Point(349, 137);
             this.checkBoxUseLuckyEgg.Name = "checkBoxUseLuckyEgg";
             this.checkBoxUseLuckyEgg.Size = new System.Drawing.Size(121, 20);
             this.checkBoxUseLuckyEgg.TabIndex = 17;
@@ -526,7 +536,7 @@
             // checkBoxRecycle
             // 
             this.checkBoxRecycle.AutoSize = true;
-            this.checkBoxRecycle.Location = new System.Drawing.Point(335, 85);
+            this.checkBoxRecycle.Location = new System.Drawing.Point(349, 85);
             this.checkBoxRecycle.Name = "checkBoxRecycle";
             this.checkBoxRecycle.Size = new System.Drawing.Size(110, 20);
             this.checkBoxRecycle.TabIndex = 15;
@@ -536,7 +546,7 @@
             // checkBoxEvolve
             // 
             this.checkBoxEvolve.AutoSize = true;
-            this.checkBoxEvolve.Location = new System.Drawing.Point(335, 59);
+            this.checkBoxEvolve.Location = new System.Drawing.Point(349, 59);
             this.checkBoxEvolve.Name = "checkBoxEvolve";
             this.checkBoxEvolve.Size = new System.Drawing.Size(102, 20);
             this.checkBoxEvolve.TabIndex = 14;
@@ -546,7 +556,7 @@
             // checkBoxCatchPokemon
             // 
             this.checkBoxCatchPokemon.AutoSize = true;
-            this.checkBoxCatchPokemon.Location = new System.Drawing.Point(335, 9);
+            this.checkBoxCatchPokemon.Location = new System.Drawing.Point(349, 9);
             this.checkBoxCatchPokemon.Name = "checkBoxCatchPokemon";
             this.checkBoxCatchPokemon.Size = new System.Drawing.Size(122, 20);
             this.checkBoxCatchPokemon.TabIndex = 12;
@@ -556,7 +566,7 @@
             // checkBoxTransfers
             // 
             this.checkBoxTransfers.AutoSize = true;
-            this.checkBoxTransfers.Location = new System.Drawing.Point(335, 33);
+            this.checkBoxTransfers.Location = new System.Drawing.Point(349, 33);
             this.checkBoxTransfers.Name = "checkBoxTransfers";
             this.checkBoxTransfers.Size = new System.Drawing.Size(110, 20);
             this.checkBoxTransfers.TabIndex = 13;
@@ -648,7 +658,7 @@
             // label43
             // 
             this.label43.AutoSize = true;
-            this.label43.Location = new System.Drawing.Point(293, 226);
+            this.label43.Location = new System.Drawing.Point(307, 226);
             this.label43.Name = "label43";
             this.label43.Size = new System.Drawing.Size(69, 16);
             this.label43.TabIndex = 19;
@@ -1614,7 +1624,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonDone.Location = new System.Drawing.Point(411, 485);
             this.buttonDone.Name = "buttonDone";
-            this.buttonDone.Size = new System.Drawing.Size(75, 23);
+            this.buttonDone.Size = new System.Drawing.Size(107, 23);
             this.buttonDone.TabIndex = 3;
             this.buttonDone.Text = "Done";
             this.buttonDone.UseVisualStyleBackColor = true;
@@ -2049,21 +2059,11 @@
             this.restoreDefaultsToolStripMenuItem2.Text = "Restore Defaults";
             this.restoreDefaultsToolStripMenuItem2.Click += new System.EventHandler(this.restoreDefaultsToolStripMenuItem2_Click);
             // 
-            // checkBoxStopOnAPIUpdate
-            // 
-            this.checkBoxStopOnAPIUpdate.AutoSize = true;
-            this.checkBoxStopOnAPIUpdate.Location = new System.Drawing.Point(335, 189);
-            this.checkBoxStopOnAPIUpdate.Name = "checkBoxStopOnAPIUpdate";
-            this.checkBoxStopOnAPIUpdate.Size = new System.Drawing.Size(148, 20);
-            this.checkBoxStopOnAPIUpdate.TabIndex = 17;
-            this.checkBoxStopOnAPIUpdate.Text = "Stop on API Update";
-            this.checkBoxStopOnAPIUpdate.UseVisualStyleBackColor = true;
-            // 
             // AccountSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(502, 539);
+            this.ClientSize = new System.Drawing.Size(534, 539);
             this.Controls.Add(this.tabControlMain);
             this.MinimumSize = new System.Drawing.Size(522, 433);
             this.Name = "AccountSettingsForm";

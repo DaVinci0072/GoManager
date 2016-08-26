@@ -119,6 +119,7 @@ namespace PokemonGoGUI.GoManager
                             LogCaller(new LoggerEventArgs("Pokestop ban was removed", LoggerTypes.Info));
                         }
 
+                        _potentialPokeStopBan = false;
                         ExpIncrease(fortResponse.ExperienceAwarded);
                         TotalPokeStopExp += fortResponse.ExperienceAwarded;
 

@@ -18,6 +18,7 @@ namespace PokemonGoGUI.GoManager
             //Get new
             //This call will increment the proxy
             CurrentProxy = ProxyHandler.GetRandomProxy();
+            _runningStopwatch.Stop();
 
             if (CurrentProxy == null)
             {
@@ -37,6 +38,7 @@ namespace PokemonGoGUI.GoManager
                 return false;
             }
 
+            _runningStopwatch.Start();
             UserSettings.ProxyIP = CurrentProxy.Address;
             UserSettings.ProxyPort = CurrentProxy.Port;
             UserSettings.ProxyUsername = CurrentProxy.Username;

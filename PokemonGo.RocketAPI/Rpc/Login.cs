@@ -61,7 +61,7 @@ namespace PokemonGo.RocketAPI.Rpc
 
         public async Task ReAuthenticate()
         {
-            await login.GetAccessToken().ConfigureAwait(false);
+            _client.AuthToken = await login.GetAccessToken().ConfigureAwait(false);
         }
 
         private async Task SetServer()

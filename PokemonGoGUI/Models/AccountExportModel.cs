@@ -16,6 +16,8 @@ namespace PokemonGoGUI.Models
         public string Password { get; set; }
         [JsonProperty("level")]
         public int Level { get; set; }
+        [JsonProperty("starDust")]
+        public int StarDust { get; set; }
         [JsonProperty("pokedex")]
         public List<PokedexEntryExportModel> Pokedex { get; set; }
         [JsonProperty("items")]

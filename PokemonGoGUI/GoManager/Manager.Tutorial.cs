@@ -13,9 +13,16 @@ namespace PokemonGoGUI.GoManager
 {
     public partial class Manager
     {
-        public async Task<MethodResult> MarkStartUpTutorialsComplete()
+        public async Task<MethodResult> MarkStartUpTutorialsComplete(bool forceAvatarUpdate)
         {
             LogCaller(new LoggerEventArgs("Marking startup tutorials completed", LoggerTypes.Debug));
+
+            MethodResult reauthResult = await CheckReauthentication();
+
+            if(!reauthResult.Success)
+            {
+                return reauthResult;
+            }
 
             bool success = true;
 
@@ -35,7 +42,6 @@ namespace PokemonGoGUI.GoManager
             List<TutorialState> startupTutorials = new List<TutorialState>
             {
                 TutorialState.LegalScreen,
-                TutorialState.AvatarSelection,
                 TutorialState.NameSelection,
                 TutorialState.FirstTimeExperienceComplete
             };
@@ -45,6 +51,15 @@ namespace PokemonGoGUI.GoManager
             foreach(TutorialState completed in completedTutorials)
             {
                 startupTutorials.Remove(completed);
+            }
+
+            if(!completedTutorials.Contains(TutorialState.AvatarSelection) || forceAvatarUpdate)
+            {
+                await SetPlayerAvatar();
+            }
+            else
+            {
+                LogCaller(new LoggerEventArgs("Avatar already set", LoggerTypes.Info));
             }
 
             if(startupTutorials.Count != 0)
@@ -161,6 +176,34 @@ namespace PokemonGoGUI.GoManager
             catch(Exception ex)
             {
                 LogCaller(new LoggerEventArgs("Failed to complete encounter tutorial", LoggerTypes.Exception, ex));
+
+                return new MethodResult();
+            }
+        }
+
+        public async Task<MethodResult> SetPlayerAvatar()
+        {
+            PlayerAvatar avatar = new PlayerAvatar();
+
+            try
+            {
+                SetAvatarResponse response = await _client.Player.SetAvatar(avatar);
+
+                LogCaller(new LoggerEventArgs("Avatar set to defaults", LoggerTypes.Success));
+
+                if (response.Status == SetAvatarResponse.Types.Status.Success)
+                {
+                    return new MethodResult
+                    {
+                        Success = true
+                    };
+                }
+
+                return new MethodResult();
+            }
+            catch (Exception ex)
+            {
+                LogCaller(new LoggerEventArgs("Failed to set avatar", LoggerTypes.Exception, ex));
 
                 return new MethodResult();
             }

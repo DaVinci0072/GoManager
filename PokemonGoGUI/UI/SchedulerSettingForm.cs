@@ -20,7 +20,11 @@ namespace PokemonGoGUI.UI
 
             foreach(SchedulerOption option in Enum.GetValues(typeof(SchedulerOption)))
             {
-                comboBoxMasterAction.Items.Add(option);
+                if (option != SchedulerOption.DisableEnable)
+                {
+                    comboBoxMasterAction.Items.Add(option);
+                }
+
                 comboBoxPokemonAction.Items.Add(option);
                 comboBoxPokestopAction.Items.Add(option);
             }
@@ -30,8 +34,6 @@ namespace PokemonGoGUI.UI
 
         private void SchedulerSettingForm_Load(object sender, EventArgs e)
         {
-
-
             UpdateDetails();
         }
 
@@ -45,8 +47,6 @@ namespace PokemonGoGUI.UI
 
             textBoxName.Text = _scheduler.Name;
 
-            numericUpDownStartTime.Value = new Decimal(_scheduler.StartTime);
-            numericUpDownEndTime.Value = new Decimal(_scheduler.EndTime);
             numericUpDownCheckSpeed.Value = _scheduler.CheckTime;
 
             comboBoxPokemonAction.SelectOption<SchedulerOption>(_scheduler.PokemonLimiter.Option);
@@ -58,6 +58,17 @@ namespace PokemonGoGUI.UI
             numericUpDownPokestopsMax.Value = _scheduler.PokeStoplimiter.Max;
 
             comboBoxMasterAction.SelectOption<SchedulerOption>(_scheduler.MasterOption);
+
+
+            //New time pickers ...
+            TimeSpan startTime = TimeSpan.FromHours(_scheduler.StartTime);
+            TimeSpan endTime = TimeSpan.FromHours(_scheduler.EndTime);
+
+            timePickerStartTime.Hours = startTime.Hours;
+            timePickerStartTime.Minutes = startTime.Minutes;
+
+            timePickerEndTime.Hours = endTime.Hours;
+            timePickerEndTime.Minutes = endTime.Minutes;
         }
 
         private bool SaveValues()
@@ -70,8 +81,8 @@ namespace PokemonGoGUI.UI
 
             _scheduler.Name = textBoxName.Text;
 
-            _scheduler.StartTime = (double)numericUpDownStartTime.Value;
-            _scheduler.EndTime = (double)numericUpDownEndTime.Value;
+            _scheduler.StartTime = new TimeSpan(timePickerStartTime.Hours, timePickerStartTime.Minutes, 0).TotalHours;
+            _scheduler.EndTime = new TimeSpan(timePickerEndTime.Hours, timePickerEndTime.Minutes, 0).TotalHours;
             _scheduler.CheckTime = (int)numericUpDownCheckSpeed.Value;
 
             _scheduler.PokemonLimiter.Option = (SchedulerOption)comboBoxPokemonAction.SelectedItem;
@@ -106,6 +117,16 @@ namespace PokemonGoGUI.UI
 
             _color = colorDialogNameColor.Color;
             textBoxChosenColor.ForeColor = _color;
+        }
+
+        private void timePickerStartTime_OnValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void timePickerEndTime_OnValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

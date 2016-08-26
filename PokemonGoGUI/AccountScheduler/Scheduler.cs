@@ -101,6 +101,12 @@ namespace PokemonGoGUI.AccountScheduler
             _timer.Elapsed += _timer_Elapsed;
 
             _timer.Start();
+
+            PokeStoplimiter.Min = 1800;
+            PokeStoplimiter.Max = 1900;
+
+            PokemonLimiter.Min = 800;
+            PokemonLimiter.Max = 900;
         }
 
         public void ForceCall()

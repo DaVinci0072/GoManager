@@ -140,7 +140,6 @@ namespace PokemonGoGUI.GoManager
                             {
                                 LogCaller(new LoggerEventArgs("Max pokemon limit reached. Disabling setting...", LoggerTypes.Debug));
                                 UserSettings.CatchPokemon = false;
-                                UserSettings.SnipePokemon = false;
                             }
                             break;
                         case SchedulerOption.StartStop: //Just stop it
@@ -158,7 +157,6 @@ namespace PokemonGoGUI.GoManager
                             {
                                 LogCaller(new LoggerEventArgs("Min pokemon limit reached. Enabling catching...", LoggerTypes.Debug));
                                 UserSettings.CatchPokemon = true;
-                                UserSettings.SnipePokemon = true;
                             }
                             break;
                         case SchedulerOption.StartStop: //Start only if pokestop is disabled/nothing or pokestops below threshold

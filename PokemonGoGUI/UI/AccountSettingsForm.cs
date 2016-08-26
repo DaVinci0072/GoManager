@@ -111,7 +111,7 @@ namespace PokemonGoGUI.UI
             checkBoxEvolve.Checked = settings.EvolvePokemon;
             checkBoxTransfers.Checked = settings.TransferPokemon;
             checkBoxUseLuckyEgg.Checked = settings.UseLuckyEgg;
-            checkBoxIncubateEggs.Checked = settings.IncubateEggs;
+            checkBoxIncubateEggs.Checked = settings.IncubateEggsBasicOnly;
             checkBoxCatchPokemon.Checked = settings.CatchPokemon;
             checkBoxSnipePokemon.Checked = settings.SnipePokemon;
             numericUpDownSnipeAfterStops.Value = settings.SnipeAfterPokestops;
@@ -296,7 +296,7 @@ namespace PokemonGoGUI.UI
             userSettings.RecycleItems = checkBoxRecycle.Checked;
             userSettings.MinPokemonBeforeEvolve = minPokemonBeforeEvolve;
             userSettings.UseLuckyEgg = checkBoxUseLuckyEgg.Checked;
-            userSettings.IncubateEggs = checkBoxIncubateEggs.Checked;
+            userSettings.IncubateEggsBasicOnly = checkBoxIncubateEggs.Checked;
             userSettings.MaxLevel = maxLevel;
             userSettings.CatchPokemon = checkBoxCatchPokemon.Checked;
             userSettings.SnipePokemon = checkBoxSnipePokemon.Checked;

@@ -21,7 +21,7 @@ namespace PokemonGoGUI.GoManager
         {
             LogCaller(new LoggerEventArgs("Updating details", LoggerTypes.Debug));
 
-            if(!_client.LoggedIn)
+            if(!_client.LoggedIn || _client.AuthExpired)
             {
                 MethodResult loginResult = await Login();
 
@@ -198,9 +198,9 @@ namespace PokemonGoGUI.GoManager
                     Directory.CreateDirectory(directoryName);
                 }
 
-                string fileName = UserSettings.PtcUsername.Split('@').First();
+                string fileName = String.Format("{1}_{0}.txt", UserSettings.PtcUsername.Split('@').First(), Stats.Level);
 
-                string filePath = Path.Combine(directoryName, fileName) + ".txt";
+                string filePath = Path.Combine(directoryName, fileName);
 
                 File.WriteAllText(filePath, builder.ToString());
 
@@ -277,9 +277,15 @@ namespace PokemonGoGUI.GoManager
             {
                 DownloadSettingsResponse response = await _client.Download.GetSettings();
 
+                if(String.IsNullOrEmpty(response.Settings.MinimumClientVersion))
+                {
+                    return new MethodResult<bool>();
+                }
+
                 return new MethodResult<bool>
                 {
                     Data = response.Settings.MinimumClientVersion == minVersion,
+                    Message = String.Format("Minimum client is now {0}", response.Settings.MinimumClientVersion),
                     Success = true
                 };
             }

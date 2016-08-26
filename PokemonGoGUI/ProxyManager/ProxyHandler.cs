@@ -26,9 +26,9 @@ namespace PokemonGoGUI.ProxyManager
 
         public void ResetFailCounter(GoProxy proxy)
         {
-            lock(proxy)
+            if (proxy != null)
             {
-                proxy.CurrentConcurrentFails = 0;
+                proxy.ClearFailCounter();
             }
         }
 
